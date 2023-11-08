@@ -4,5 +4,12 @@
   "main": "index.js",
   "repository": "git@github.com:sergeialimov/fund.git",
   "author": "Sergei <dev.sergeialimov@gmail.com>",
-  "license": "MIT"
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "3.0.3"
+  },
+  "scripts": {
+    "prettier": "npx prettier . --check",
+    "prettier-fix": "yarn prettier . --write"
+  }
 }
