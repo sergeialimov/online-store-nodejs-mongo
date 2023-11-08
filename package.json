@@ -1,0 +1,8 @@
+{
+  "name": "fund",
+  "version": "1.0.0",
+  "main": "index.js",
+  "repository": "git@github.com:sergeialimov/fund.git",
+  "author": "Sergei <dev.sergeialimov@gmail.com>",
+  "license": "MIT"
+}
