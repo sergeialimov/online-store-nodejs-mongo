@@ -8,22 +8,20 @@ Online store application including:
 2. SyncApp
 3. Db lib
 
-
-
 ## Setting up
 
 1. Clone the repo
 
-
 2. Install dependencies
-`yarn install`
+   `yarn install`
 
 3. set env variables in .env file
-`DB_URI=mongodb://127.0.0.1:27017/fund?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.0.2`
+   `DB_URI=mongodb://127.0.0.1:27017/fund?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.0.2`
 
 ## Launching
+
 1. Run the StoreApp
-    `npx ts-node apps/app.ts`
+   `npx ts-node apps/app.ts`
 
 2. Run the SyncApp
-    `npx ts-node apps/sync/sync.ts`
+   `npx ts-node apps/sync/sync.ts`
