@@ -1,23 +1,16 @@
-// db.ts can also be the same in both applications, managing the database connection logic.
-import { MongoClient } from 'mongodb';
-import DB_CONFIG from './dbConfig';
+import { MongoClient } from "mongodb";
 
-const client = new MongoClient(DB_CONFIG.uri, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-});
+const DB_URI = process.env.DB_URI;
 
 export const connectToDatabase = async () => {
-  if (!client.isConnected()) {
-    await client.connect();
-    console.log('Connected to MongoDB');
+console.log('-- process.env2', process.env.DB_URI);
+  if (!DB_URI) {
+    throw new Error("Please define the DB_URI environment variable inside .env.local");
   }
-  return client.db(DB_CONFIG.dbName);
-};
+  const client = new MongoClient(DB_URI);
 
-export const disconnectFromDatabase = async () => {
-  if (client.isConnected()) {
-    await client.close();
-    console.log('Disconnected from MongoDB');
-  }
+  await client.connect();
+  console.log("Connected to MongoDB");
+
+  return client;
 };
