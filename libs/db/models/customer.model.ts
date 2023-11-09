@@ -1,4 +1,4 @@
-import { ObjectId } from 'mongodb';
+import { ObjectId } from "mongodb";
 
 export interface Address {
   line1: string;
@@ -15,5 +15,5 @@ export interface Customer {
   lastName: string;
   email: string;
   address: Address;
-  createdAt?: Date;
+  createdAt: Date;
 }
