@@ -1,5 +1,5 @@
-import { faker } from '@faker-js/faker';
-import { Customer } from '../../libs/db';
+import { faker } from "@faker-js/faker";
+import { Customer } from "../../libs/db";
 
 function createRandomCustomer(): Customer {
   return {
@@ -13,13 +13,11 @@ function createRandomCustomer(): Customer {
       city: faker.location.city(),
       state: faker.location.state(),
       country: faker.location.country(),
-    }
-  }
+    },
+    createdAt: new Date(),
+  };
 }
 
-export function getCustomers (amount: number): Customer[] {
-  return faker.helpers.multiple(
-    createRandomCustomer,
-    { count: amount }
-  );
+export function getCustomers(amount: number): Customer[] {
+  return faker.helpers.multiple(createRandomCustomer, { count: amount });
 }
