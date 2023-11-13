@@ -1,5 +1,5 @@
 import { MongoClient } from "mongodb";
-import 'dotenv/config';
+import "dotenv/config";
 import { getCustomers } from "./utils";
 import { CustomerService, connectToDatabase } from "../../libs/db/";
 

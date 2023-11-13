@@ -1,1 +1,1 @@
-export * from "./faker.util"
+export * from "./faker.util";

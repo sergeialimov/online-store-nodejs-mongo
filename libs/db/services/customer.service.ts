@@ -17,7 +17,7 @@ export class CustomerService {
     try {
       const insertResult = await this.collection.insertMany(customers);
       console.log(
-        `Inserted ${insertResult.insertedCount} customers into the collection`
+        `Inserted ${insertResult.insertedCount} customers into the collection`,
       );
     } catch (err) {
       console.error("An error occurred:", err);
