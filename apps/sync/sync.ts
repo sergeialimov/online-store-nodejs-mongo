@@ -1,12 +1,16 @@
 import "dotenv/config";
 import {
   connectToDatabase,
-  AnonymizedCustomer
+  AnonymizedCustomer,
   CustomerService,
   AnonymizedCustomerService,
 } from "../../libs/db";
 
-import { saveResumeToken, getResumeToken } from "../../apps/";
+import {
+  saveResumeToken,
+  getResumeToken,
+  anonymizeCustomer,
+} from "../../shared/utils";
 
 (async () => {
   const client = await connectToDatabase();
@@ -41,7 +45,7 @@ import { saveResumeToken, getResumeToken } from "../../apps/";
       }
     }
   } catch (error) {
-    console.error('Error processing change stream:', error);
+    console.error("Error processing change stream:", error);
   } finally {
     changeStream.close();
   }

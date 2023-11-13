@@ -1,5 +1,5 @@
-import { MongoClient, Collection } from 'mongodb';
-import { AnonymizedCustomer } from './anonymized-customer.model';
+import { MongoClient, Collection } from "mongodb";
+import { AnonymizedCustomer } from "../models";
 
 export class AnonymizedCustomerService {
   private dbClient: MongoClient;
@@ -7,7 +7,7 @@ export class AnonymizedCustomerService {
 
   constructor(dbClient: MongoClient) {
     this.dbClient = dbClient;
-    this.collection = this.dbClient.db().collection('customers_anonymized');
+    this.collection = this.dbClient.db().collection("customers_anonymized");
   }
 
   public async insertBatch(batch: AnonymizedCustomer[]): Promise<void> {

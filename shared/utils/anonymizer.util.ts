@@ -1,8 +1,11 @@
-import { createHash } from 'crypto';
+import { createHash } from "crypto";
 
-function deterministicPseudorandomString(input: string, length: number = 8): string {
-  const hash = createHash('sha256').update(input).digest('hex');
-  const base62 = hash.substring(0, length).replace(/[0-9a-f]/g, char => {
+function deterministicPseudorandomString(
+  input: string,
+  length: number = 8,
+): string {
+  const hash = createHash("sha256").update(input).digest("hex");
+  const base62 = hash.substring(0, length).replace(/[0-9a-f]/g, (char) => {
     // Convert hexadecimal characters to base62
     const code = parseInt(char, 16);
     if (code < 10) return String.fromCharCode(code + 48); // 0-9
@@ -13,20 +16,21 @@ function deterministicPseudorandomString(input: string, length: number = 8): str
   return base62.substring(0, length);
 }
 
-function anonymizeCustomer(customer: Customer): Customer {
+export function anonymizeCustomer(customer: Customer): Customer {
   return {
     ...customer,
     firstName: deterministicPseudorandomString(customer.firstName),
     lastName: deterministicPseudorandomString(customer.lastName),
-    email: deterministicPseudorandomString(customer.email.split('@')[0]) + customer.email.substring(customer.email.indexOf('@')),
+    email:
+      deterministicPseudorandomString(customer.email.split("@")[0]) +
+      customer.email.substring(customer.email.indexOf("@")),
     address: {
       ...customer.address,
       line1: deterministicPseudorandomString(customer.address.line1),
-      line2: customer.address.line2 ? deterministicPseudorandomString(customer.address.line2) : '',
+      line2: customer.address.line2
+        ? deterministicPseudorandomString(customer.address.line2)
+        : "",
       postcode: deterministicPseudorandomString(customer.address.postcode),
     },
   };
 }
-
-const anonymizedCustomer = anonymizeCustomer(originalCustomer);
-console.log(anonymizedCustomer);
