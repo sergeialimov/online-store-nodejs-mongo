@@ -1,4 +1,4 @@
-import { Collection, MongoClient, ChangeStream } from "mongodb";
+import { Collection, MongoClient, ResumeToken, ChangeStream } from "mongodb";
 import { Customer } from "../models";
 
 export class CustomerService {
@@ -24,8 +24,11 @@ export class CustomerService {
     }
   }
 
-  public getChangeStream(): ChangeStream<Customer> {
-    return this.collection.watch();
+  public getChangeStream(resumeToken: ResumeToken): ChangeStream<Customer> {
+    if (!resumeToken) {
+      return this.collection.watch();
+    }
+    return this.collection.watch([], { resumeAfter: resumeToken });
   }
 }
 

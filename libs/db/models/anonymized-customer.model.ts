@@ -14,6 +14,6 @@ export interface AnonymizedCustomer {
   firstName: string; // Anonymized
   lastName: string; // Anonymized
   email: string; // Partially anonymized — part before '@'
-  address: AnonymizedAddress; // // Partially anonymized — line1, line2, postcode
+  address: AnonymizedAddress; // Partially anonymized — line1, line2, postcode
   createdAt: Date; // The creation date remains unchanged
 }

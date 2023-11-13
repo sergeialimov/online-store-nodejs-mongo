@@ -1,4 +1,5 @@
 import { createHash } from "crypto";
+import { Customer } from "../../libs/db";
 
 function deterministicPseudorandomString(
   input: string,
