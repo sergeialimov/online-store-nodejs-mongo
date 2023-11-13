@@ -2,7 +2,7 @@ import { ObjectId } from "mongodb";
 
 export interface Address {
   line1: string;
-  line2?: string; // line2 is optional
+  line2?: string;
   postcode: string;
   city: string;
   state: string;

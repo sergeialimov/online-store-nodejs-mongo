@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 import "dotenv/config";
-import { getCustomers } from "./utils";
+import { getCustomers } from "../../shared/utils";
 import { CustomerService, connectToDatabase } from "../../libs/db/";
 
 (async () => {
