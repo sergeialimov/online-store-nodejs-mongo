@@ -1,8 +1,7 @@
 import { MongoClient } from "mongodb";
 import 'dotenv/config';
-import { getCustomers } from "./faker.util";
-import CustomerService from "../../libs/db/services/customer.service";
-import { connectToDatabase } from "../../libs/db/d"; // disconnectFromDatabase
+import { getCustomers } from "./utils";
+import { CustomerService, connectToDatabase } from "../../libs/db/";
 
 (async () => {
   let client: MongoClient;
@@ -15,7 +14,6 @@ import { connectToDatabase } from "../../libs/db/d"; // disconnectFromDatabase
       try {
         const amount = Math.floor(Math.random() * 10) + 1;
         const customers = getCustomers(amount);
-        console.log("-- Inserting amount:", amount);
 
         await customerService.createCustomers(customers);
 

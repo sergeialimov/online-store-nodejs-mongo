@@ -1,5 +1,5 @@
 import { faker } from "@faker-js/faker";
-import { Customer } from "../../libs/db";
+import { Customer } from "../../../libs/db";
 
 function createRandomCustomer(): Customer {
   return {
