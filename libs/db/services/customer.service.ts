@@ -1,7 +1,7 @@
-import { Collection, MongoClient } from "mongodb";
+import { Collection, MongoClient, ChangeStream } from "mongodb";
 import { Customer } from "../models";
 
-class CustomerService {
+export class CustomerService {
   private dbClient: MongoClient;
   private collection: Collection<Customer>;
   private readonly collectionName = "customers";
@@ -16,10 +16,16 @@ class CustomerService {
   public async createCustomers(customers: Customer[]): Promise<void> {
     try {
       const insertResult = await this.collection.insertMany(customers);
-      console.log("Inserted documents =>", insertResult);
+      console.log(
+        `Inserted ${insertResult.insertedCount} customers into the collection`
+      );
     } catch (err) {
       console.error("An error occurred:", err);
     }
+  }
+
+  public getChangeStream(): ChangeStream<Customer> {
+    return this.collection.watch();
   }
 }
 
