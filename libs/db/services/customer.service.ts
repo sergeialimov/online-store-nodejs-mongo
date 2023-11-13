@@ -1,4 +1,10 @@
-import { Collection, MongoClient, ResumeToken, ChangeStream } from "mongodb";
+import {
+  Collection,
+  MongoClient,
+  ResumeToken,
+  ChangeStream,
+  ChangeStreamDocument,
+} from "mongodb";
 import { Customer } from "../models";
 
 export class CustomerService {
@@ -29,6 +35,16 @@ export class CustomerService {
       return this.collection.watch();
     }
     return this.collection.watch([], { resumeAfter: resumeToken });
+  }
+
+  public isInsertReplaceOrUpdate(
+    change: ChangeStreamDocument<Customer>,
+  ): change is ChangeStreamDocument<Customer> & { fullDocument: Customer } {
+    return (
+      change.operationType === "insert" ||
+      change.operationType === "replace" ||
+      change.operationType === "update"
+    );
   }
 }
 
