@@ -1,7 +1,5 @@
-# Logs
-logs
-yarn-debug.log*
-yarn-error.log*
+node_modules/
+apps/sync/resume-token.txt
 
 # dotenv environment variable files
 .env
@@ -10,7 +8,7 @@ yarn-error.log*
 .env.production.local
 .env.local
 
-
-node_modules/
-
-apps/sync/resume-token.txt
+# Logs
+logs
+yarn-debug.log*
+yarn-error.log*

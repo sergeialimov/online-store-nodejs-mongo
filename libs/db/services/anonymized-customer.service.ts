@@ -1,16 +1,16 @@
 import { MongoClient, Collection } from "mongodb";
-import { AnonymizedCustomer } from "../models";
+import { AnonymisedCustomer } from "../models";
 
-export class AnonymizedCustomerService {
+export class AnonymisedCustomerService {
   private dbClient: MongoClient;
-  private collection: Collection<AnonymizedCustomer>;
+  private collection: Collection<AnonymisedCustomer>;
 
   constructor(dbClient: MongoClient) {
     this.dbClient = dbClient;
-    this.collection = this.dbClient.db().collection("customers_anonymized");
+    this.collection = this.dbClient.db().collection("customers_anonymised");
   }
 
-  public async upsertBatch(batch: AnonymizedCustomer[]): Promise<void> {
+  public async upsertBatch(batch: AnonymisedCustomer[]): Promise<void> {
     const bulkOps = batch.map((doc) => ({
       updateOne: {
         filter: { _id: doc._id },

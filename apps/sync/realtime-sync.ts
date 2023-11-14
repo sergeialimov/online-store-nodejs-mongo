@@ -1,7 +1,7 @@
 import {
-  AnonymizedCustomer,
+  AnonymisedCustomer,
   CustomerService,
-  AnonymizedCustomerService,
+  AnonymisedCustomerService,
 } from "../../libs/db";
 
 import {
@@ -16,7 +16,7 @@ const batchInterval = 1000;
 
 export async function realTimeSync(
   customerService: CustomerService,
-  anonymizedCustomerService: AnonymizedCustomerService,
+  anonymisedCustomerService: AnonymisedCustomerService,
 ) {
   let changeStream;
   try {
@@ -31,14 +31,14 @@ export async function realTimeSync(
         continue;
       }
 
-      let batch: AnonymizedCustomer[] = [];
+      let batch: AnonymisedCustomer[] = [];
       let batchTimer: NodeJS.Timeout | null = null;
       const resumeToken = JSON.stringify(change._id);
       const anonymizedData = anonymizeCustomer(change.fullDocument);
       batch.push(anonymizedData);
 
       if (batch.length === batchLength) {
-        await anonymizedCustomerService.upsertBatch(batch);
+        await anonymisedCustomerService.upsertBatch(batch);
         batch = [];
         if (batchTimer) {
           clearTimeout(batchTimer);
@@ -46,7 +46,7 @@ export async function realTimeSync(
         await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
       } else if (!batchTimer) {
         batchTimer = setTimeout(async () => {
-          await anonymizedCustomerService.upsertBatch(batch);
+          await anonymisedCustomerService.upsertBatch(batch);
           batch = [];
           await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
         }, batchInterval);

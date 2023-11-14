@@ -1,6 +1,6 @@
 import { ObjectId } from "mongodb";
 
-export interface AnonymizedAddress {
+export interface AnonymisedAddress {
   line1: string;
   line2?: string;
   postcode: string;
@@ -9,11 +9,11 @@ export interface AnonymizedAddress {
   country: string;
 }
 
-export interface AnonymizedCustomer {
+export interface AnonymisedCustomer {
   _id?: ObjectId;
   firstName: string; // Anonymized
   lastName: string; // Anonymized
   email: string; // Partially anonymized — part before '@'
-  address: AnonymizedAddress; // Partially anonymized — line1, line2, postcode
+  address: AnonymisedAddress; // Partially anonymized — line1, line2, postcode
   createdAt: Date; // The creation date remains unchanged
 }
