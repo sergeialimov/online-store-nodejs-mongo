@@ -23,13 +23,15 @@ export class CustomerService {
     try {
       const bulkOps = customers.map((customer) => ({
         updateOne: {
-          filter: { _id: customer._id },
+          filter: { email: customer.email },
           update: { $set: customer },
           upsert: true,
         },
       }));
 
-      const result = await this.collection.bulkWrite(bulkOps);
+      const result = await this.collection.bulkWrite(bulkOps, {
+        ordered: false,
+      });
       console.log(
         `Processed ${
           result.modifiedCount + result.upsertedCount

@@ -19,7 +19,7 @@ export class AnonymisedCustomerService {
       },
     }));
 
-    await this.collection.bulkWrite(bulkOps);
+    await this.collection.bulkWrite(bulkOps, { ordered: false });
     console.log(`${bulkOps.length} document(s) have been upserted`);
   }
 }

@@ -66,9 +66,9 @@ This application focuses on data synchronization and anonymisation.
 
 - For real-time synchronization:
 
-   ```
-   yarn run-sync
-   ```
+  ```
+  yarn run-sync
+  ```
 
 - For full reindexing:
   ```
