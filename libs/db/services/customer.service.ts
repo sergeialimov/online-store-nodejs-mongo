@@ -31,10 +31,8 @@ export class CustomerService {
   }
 
   public getChangeStream(resumeToken: ResumeToken): ChangeStream<Customer> {
-    if (!resumeToken) {
-      return this.collection.watch();
-    }
-    return this.collection.watch([], { resumeAfter: resumeToken });
+    const options = resumeToken ? { resumeAfter: resumeToken } : {};
+    return this.collection.watch([], options);
   }
 
   public isInsertReplaceOrUpdate(

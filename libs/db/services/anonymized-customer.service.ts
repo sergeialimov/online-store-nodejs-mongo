@@ -20,5 +20,6 @@ export class AnonymizedCustomerService {
     }));
 
     await this.collection.bulkWrite(bulkOps);
+    console.log(`${bulkOps.length} document(s) have been upserted`);
   }
 }
