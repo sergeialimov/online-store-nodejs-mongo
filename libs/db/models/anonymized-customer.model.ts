@@ -11,9 +11,9 @@ export interface AnonymisedAddress {
 
 export interface AnonymisedCustomer {
   _id?: ObjectId;
-  firstName: string; // Anonymized
-  lastName: string; // Anonymized
-  email: string; // Partially anonymized — part before '@'
-  address: AnonymisedAddress; // Partially anonymized — line1, line2, postcode
+  firstName: string; // Anonymised
+  lastName: string; // Anonymised
+  email: string; // Partially anonymised — part before '@'
+  address: AnonymisedAddress; // Partially anonymised — line1, line2, postcode
   createdAt: Date; // The creation date remains unchanged
 }

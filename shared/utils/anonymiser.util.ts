@@ -17,7 +17,7 @@ function deterministicPseudorandomString(
   return base62.substring(0, length);
 }
 
-export function anonymizeCustomer(customer: Customer): Customer {
+export function anonymiseCustomer(customer: Customer): Customer {
   return {
     ...customer,
     firstName: deterministicPseudorandomString(customer.firstName),

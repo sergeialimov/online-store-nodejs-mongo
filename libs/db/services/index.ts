@@ -1,2 +1,2 @@
 export * from "./customer.service";
-export * from "./anonymized-customer.service";
+export * from "./anonymised-customer.service";

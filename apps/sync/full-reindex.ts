@@ -7,7 +7,7 @@ import {
 import {
   saveResumeToken,
   getResumeToken,
-  anonymizeCustomer,
+  anonymiseCustomer,
 } from "../../shared/utils";
 
 const batchLength = 10000;
@@ -25,7 +25,7 @@ export async function fullReindex(
     while (await cursor.hasNext()) {
       const customer = await cursor.next();
       if (customer) {
-        batch.push(anonymizeCustomer(customer));
+        batch.push(anonymiseCustomer(customer));
 
         if (batch.length === batchLength) {
           await anonymisedCustomerService.upsertBatch(batch);

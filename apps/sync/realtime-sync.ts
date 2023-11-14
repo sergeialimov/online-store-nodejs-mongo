@@ -7,7 +7,7 @@ import {
 import {
   saveResumeToken,
   getResumeToken,
-  anonymizeCustomer,
+  anonymiseCustomer,
 } from "../../shared/utils";
 
 const RESUME_TOKEN_PATH = "apps/sync/resume-token.txt";
@@ -34,8 +34,8 @@ export async function realTimeSync(
       let batch: AnonymisedCustomer[] = [];
       let batchTimer: NodeJS.Timeout | null = null;
       const resumeToken = JSON.stringify(change._id);
-      const anonymizedData = anonymizeCustomer(change.fullDocument);
-      batch.push(anonymizedData);
+      const anonymisedData = anonymiseCustomer(change.fullDocument);
+      batch.push(anonymisedData);
 
       if (batch.length === batchLength) {
         await anonymisedCustomerService.upsertBatch(batch);
