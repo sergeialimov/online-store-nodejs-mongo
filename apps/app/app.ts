@@ -1,10 +1,10 @@
 import { MongoClient } from "mongodb";
 import "dotenv/config";
 import { getCustomers } from "../../shared/utils";
-import { CustomerService, connectToDatabase } from "../../libs/db/";
+import { CustomerService, connectToDatabase, disconnectFromDatabase } from "../../libs/db/";
 
 (async () => {
-  let client: MongoClient;
+  let client: MongoClient | null = null;
   try {
     client = await connectToDatabase();
     const customerService = new CustomerService(client);
@@ -28,6 +28,8 @@ import { CustomerService, connectToDatabase } from "../../libs/db/";
     insertCustomersRepeatedly();
   } catch (err) {
     console.error("Startup error:", err);
-    // await disconnectFromDatabase(client);
+    if (client) {
+      await disconnectFromDatabase(client);
+    }
   }
 })();

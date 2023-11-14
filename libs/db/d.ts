@@ -15,3 +15,14 @@ export const connectToDatabase = async () => {
 
   return client;
 };
+
+export const disconnectFromDatabase = async (client: MongoClient | undefined) => {
+  if (client) {
+    try {
+      await client.close();
+      console.log('Disconnected from MongoDB');
+    } catch (error) {
+      console.error('Error while disconnecting:', error);
+    }
+  }
+};
