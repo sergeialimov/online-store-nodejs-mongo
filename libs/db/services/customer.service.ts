@@ -21,9 +21,19 @@ export class CustomerService {
 
   public async createCustomers(customers: Customer[]): Promise<void> {
     try {
-      const insertResult = await this.collection.insertMany(customers);
+      const bulkOps = customers.map((customer) => ({
+        updateOne: {
+          filter: { _id: customer._id },
+          update: { $set: customer },
+          upsert: true,
+        },
+      }));
+
+      const result = await this.collection.bulkWrite(bulkOps);
       console.log(
-        `Inserted ${insertResult.insertedCount} customers into the collection`,
+        `Processed ${
+          result.modifiedCount + result.upsertedCount
+        } customers (updated + upserted) into the collection`,
       );
     } catch (err) {
       console.error("An error occurred:", err);

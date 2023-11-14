@@ -11,12 +11,12 @@ export class AnonymizedCustomerService {
   }
 
   public async upsertBatch(batch: AnonymizedCustomer[]): Promise<void> {
-    const bulkOps = batch.map(doc => ({
+    const bulkOps = batch.map((doc) => ({
       updateOne: {
         filter: { _id: doc._id },
         update: { $set: doc },
-        upsert: true
-      }
+        upsert: true,
+      },
     }));
 
     await this.collection.bulkWrite(bulkOps);
