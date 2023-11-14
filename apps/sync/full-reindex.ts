@@ -16,6 +16,7 @@ export async function fullReindex(
   customerService: CustomerService,
   anonymizedCustomerService: AnonymizedCustomerService,
 ) {
+  console.log("Full reindexing started");
   const cursor = customerService.getCustomersCursor(batchLength);
 
   let batch: AnonymizedCustomer[] = [];
@@ -26,7 +27,8 @@ export async function fullReindex(
       batch.push(anonymizeCustomer(customer));
 
       if (batch.length === batchLength) {
-        await anonymizedCustomerService.insertBatch(batch);
+        await anonymizedCustomerService.upsertBatch(batch);
+        console.log(`${batch.length} documents have been upserted`);
         batch = [];
       }
     }
@@ -34,7 +36,8 @@ export async function fullReindex(
 
   // Insert any remaining customers in the last batch
   if (batch.length > 0) {
-    await anonymizedCustomerService.insertBatch(batch);
+    await anonymizedCustomerService.upsertBatch(batch);
+    console.log(`${batch.length} documents have been upserted`);
   }
 
   console.log("Full reindexing completed");

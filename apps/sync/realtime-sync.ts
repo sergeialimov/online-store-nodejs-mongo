@@ -38,7 +38,7 @@ export async function realTimeSync(
       batch.push(anonymizedData);
 
       if (batch.length === batchLength) {
-        await anonymizedCustomerService.insertBatch(batch);
+        await anonymizedCustomerService.upsertBatch(batch);
         batch = [];
         if (batchTimer) {
           clearTimeout(batchTimer);
@@ -46,7 +46,7 @@ export async function realTimeSync(
         await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
       } else if (!batchTimer) {
         batchTimer = setTimeout(async () => {
-          await anonymizedCustomerService.insertBatch(batch);
+          await anonymizedCustomerService.upsertBatch(batch);
           batch = [];
           await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
         }, batchInterval);

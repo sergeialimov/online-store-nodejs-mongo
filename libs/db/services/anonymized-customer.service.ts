@@ -10,9 +10,15 @@ export class AnonymizedCustomerService {
     this.collection = this.dbClient.db().collection("customers_anonymized");
   }
 
-  public async insertBatch(batch: AnonymizedCustomer[]): Promise<void> {
-    if (batch.length > 0) {
-      await this.collection.insertMany(batch);
-    }
+  public async upsertBatch(batch: AnonymizedCustomer[]): Promise<void> {
+    const bulkOps = batch.map(doc => ({
+      updateOne: {
+        filter: { _id: doc._id },
+        update: { $set: doc },
+        upsert: true
+      }
+    }));
+
+    await this.collection.bulkWrite(bulkOps);
   }
 }
