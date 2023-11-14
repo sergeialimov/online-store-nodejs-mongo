@@ -11,6 +11,7 @@
   "scripts": {
     "run-app": "npx ts-node apps/app/app.ts",
     "run-sync": "npx ts-node apps/sync/sync.ts",
+    "run-sync-reindex": "npx ts-node apps/sync/sync.ts --full-reindex",
     "prettier": "npx prettier . --check",
     "prettier-fix": "yarn prettier . --write"
   },

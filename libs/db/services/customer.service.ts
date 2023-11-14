@@ -46,6 +46,10 @@ export class CustomerService {
       change.operationType === "update"
     );
   }
+
+  public getCustomersCursor(batchSize: number) {
+    return this.collection.find().batchSize(batchSize);
+  }
 }
 
 export default CustomerService;
