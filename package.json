@@ -13,7 +13,7 @@
     "run-sync": "npx ts-node apps/sync/sync.ts",
     "run-sync-reindex": "npx ts-node apps/sync/sync.ts --full-reindex",
     "prettier": "npx prettier . --check",
-    "prettier-fix": "yarn prettier . --write"
+    "prettier-fix": "npx prettier . --write"
   },
   "dependencies": {
     "@faker-js/faker": "^8.2.0",

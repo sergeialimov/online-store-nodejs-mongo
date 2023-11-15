@@ -4,10 +4,13 @@ import { AnonymisedCustomer } from "../models";
 export class AnonymisedCustomerService {
   private dbClient: MongoClient;
   private collection: Collection<AnonymisedCustomer>;
+  private readonly collectionName = "customers_anonymised";
 
   constructor(dbClient: MongoClient) {
     this.dbClient = dbClient;
-    this.collection = this.dbClient.db().collection("customers_anonymised");
+    this.collection = this.dbClient
+      .db()
+      .collection<AnonymisedCustomer>(this.collectionName);
   }
 
   public async upsertBatch(batch: AnonymisedCustomer[]): Promise<void> {

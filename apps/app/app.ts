@@ -1,7 +1,11 @@
 import { MongoClient } from "mongodb";
 import "dotenv/config";
 import { getCustomers } from "../../shared/utils";
-import { CustomerService, connectToDatabase, disconnectFromDatabase } from "../../libs/db/";
+import {
+  CustomerService,
+  connectToDatabase,
+  disconnectFromDatabase,
+} from "../../libs/db/";
 
 (async () => {
   let client: MongoClient | null = null;

@@ -29,12 +29,10 @@ This application focuses on data synchronization and anonymisation.
 
 - Node.js (version 12 or higher)
 - MongoDB (version 4.0 or higher)
-- A MongoDB database with a `customers` and `customers_anonymised` collection
 
 ### Installation and Configuration
 
-1. Clone the repository:
-   git clone [https://github.com/sergeialimov/online-store]
+1. Clone the repository
 
 2. Navigate to the project directory and install dependencies:
 

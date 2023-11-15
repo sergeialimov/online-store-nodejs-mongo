@@ -5,7 +5,7 @@ const DB_URI = process.env.DB_URI;
 export const connectToDatabase = async () => {
   if (!DB_URI) {
     throw new Error(
-      "Please define the DB_URI environment variable inside .env.local",
+      "Please define the DB_URI environment variable inside .env config",
     );
   }
   const client = new MongoClient(DB_URI);
@@ -16,13 +16,15 @@ export const connectToDatabase = async () => {
   return client;
 };
 
-export const disconnectFromDatabase = async (client: MongoClient | undefined) => {
+export const disconnectFromDatabase = async (
+  client: MongoClient | undefined,
+) => {
   if (client) {
     try {
       await client.close();
-      console.log('Disconnected from MongoDB');
+      console.log("Disconnected from MongoDB");
     } catch (error) {
-      console.error('Error while disconnecting:', error);
+      console.error("Error while disconnecting:", error);
     }
   }
 };
