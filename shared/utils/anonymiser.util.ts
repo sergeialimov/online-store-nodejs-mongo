@@ -18,13 +18,14 @@ function deterministicPseudorandomString(
 }
 
 export function anonymiseCustomer(customer: Customer): Customer {
+  const emailParts = customer.email.split("@");
+
   return {
     ...customer,
     firstName: deterministicPseudorandomString(customer.firstName),
     lastName: deterministicPseudorandomString(customer.lastName),
     email:
-      deterministicPseudorandomString(customer.email.split("@")[0]) +
-      customer.email.substring(customer.email.indexOf("@")),
+      deterministicPseudorandomString(emailParts[0]) + emailParts[1],
     address: {
       ...customer.address,
       line1: deterministicPseudorandomString(customer.address.line1),
