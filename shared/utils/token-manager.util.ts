@@ -20,7 +20,7 @@ export async function getResumeToken(
     const tokenString = await fs.readFile(path, { encoding: "utf8" });
     return tokenString ? JSON.parse(tokenString) : null;
   } catch (error: unknown) {
-    // Check if the error is an instance of NodeJS.ErrnoException
+    // Check if file doesn't exist
     if (
       error instanceof Error &&
       (error as NodeJS.ErrnoException).code === "ENOENT"
