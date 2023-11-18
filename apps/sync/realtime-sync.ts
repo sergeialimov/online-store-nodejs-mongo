@@ -10,9 +10,11 @@ import {
   anonymiseCustomer,
 } from "../../shared/utils";
 
-const RESUME_TOKEN_PATH = "apps/sync/resume-token.txt";
-const batchLength = 1000;
-const batchInterval = 1000;
+import {
+  RESUME_TOKEN_PATH,
+  BATCH_LENGTH,
+  BATCH_INTERVAL,
+} from "./constants";
 
 export async function realTimeSync(
   customerService: CustomerService,
@@ -37,7 +39,7 @@ export async function realTimeSync(
       const anonymisedData = anonymiseCustomer(change.fullDocument);
       batch.push(anonymisedData);
 
-      if (batch.length === batchLength) {
+      if (batch.length === BATCH_LENGTH) {
         await anonymisedCustomerService.upsertBatch(batch);
         batch = [];
         if (batchTimer) {
@@ -49,7 +51,7 @@ export async function realTimeSync(
           await anonymisedCustomerService.upsertBatch(batch);
           batch = [];
           await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
-        }, batchInterval);
+        }, BATCH_INTERVAL);
       }
     }
   } catch (error) {

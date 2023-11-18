@@ -24,8 +24,7 @@ export function anonymiseCustomer(customer: Customer): Customer {
     ...customer,
     firstName: deterministicPseudorandomString(customer.firstName),
     lastName: deterministicPseudorandomString(customer.lastName),
-    email:
-      deterministicPseudorandomString(emailParts[0]) + emailParts[1],
+    email: deterministicPseudorandomString(emailParts[0]) + emailParts[1],
     address: {
       ...customer.address,
       line1: deterministicPseudorandomString(customer.address.line1),
