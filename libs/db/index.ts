@@ -1,3 +1,3 @@
 export * from "./models";
 export * from "./services";
-export * from "./d";
+export * from "./db-connection.ts";
