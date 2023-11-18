@@ -18,6 +18,6 @@ function createRandomCustomer(): Customer {
   };
 }
 
-export function getCustomers(amount: number): Customer[] {
+export function createRandomCustomers(amount: number): Customer[] {
   return faker.helpers.multiple(createRandomCustomer, { count: amount });
 }

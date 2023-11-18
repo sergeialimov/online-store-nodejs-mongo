@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 import "dotenv/config";
-import { getCustomers } from "../../shared/utils";
+import { createRandomCustomers } from "../../shared/utils";
 import {
   CustomerService,
   connectToDatabase,
@@ -17,7 +17,7 @@ import {
     const insertCustomersRepeatedly = async () => {
       try {
         const amount = Math.floor(Math.random() * 10) + 1;
-        const customers = getCustomers(amount);
+        const customers = createRandomCustomers(amount);
 
         await customerService.createCustomers(customers);
 
