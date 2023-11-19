@@ -1,4 +1,5 @@
 import { MongoClient } from "mongodb";
+import { setTimeout } from "timers/promises";
 import "dotenv/config";
 import { createRandomCustomers } from "../../shared/utils";
 import {
@@ -6,8 +7,6 @@ import {
   connectToDatabase,
   disconnectFromDatabase,
 } from "../../libs/db/";
-
-const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 (async () => {
   let client: MongoClient | null = null;
@@ -23,10 +22,10 @@ const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
         await customerService.createCustomers(customers);
 
-        await delay(interval);
+        await setTimeout(interval);
       } catch (error) {
         console.error("Error inserting customers:", error);
-        await delay(interval);
+        await setTimeout(interval);
       }
     }
   } catch (err) {

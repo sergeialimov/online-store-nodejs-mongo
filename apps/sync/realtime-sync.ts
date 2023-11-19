@@ -1,4 +1,4 @@
-import { setTimeout } from 'timers/promises';
+import { setTimeout } from "timers/promises";
 import {
   AnonymisedCustomer,
   CustomerService,
@@ -11,11 +11,7 @@ import {
   anonymiseCustomer,
 } from "../../shared/utils";
 
-import {
-  RESUME_TOKEN_PATH,
-  BATCH_LENGTH,
-  BATCH_INTERVAL,
-} from "./constants";
+import { RESUME_TOKEN_PATH, BATCH_LENGTH, BATCH_INTERVAL } from "./constants";
 
 export async function realTimeSync(
   customerService: CustomerService,
