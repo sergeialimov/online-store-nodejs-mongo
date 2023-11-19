@@ -1,3 +1,4 @@
+import { setTimeout } from 'timers/promises';
 import {
   AnonymisedCustomer,
   CustomerService,
@@ -42,16 +43,12 @@ export async function realTimeSync(
       if (batch.length === BATCH_LENGTH) {
         await anonymisedCustomerService.upsertBatch(batch);
         batch = [];
-        if (batchTimer) {
-          clearTimeout(batchTimer);
-        }
         await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
       } else if (!batchTimer) {
-        batchTimer = setTimeout(async () => {
-          await anonymisedCustomerService.upsertBatch(batch);
-          batch = [];
-          await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
-        }, BATCH_INTERVAL);
+        await setTimeout(BATCH_INTERVAL);
+        await anonymisedCustomerService.upsertBatch(batch);
+        batch = [];
+        await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
       }
     }
   } catch (error) {
