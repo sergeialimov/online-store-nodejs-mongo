@@ -11,7 +11,7 @@ import {
   anonymiseCustomer,
 } from "../../shared/utils";
 
-import { RESUME_TOKEN_PATH, BATCH_LENGTH, BATCH_INTERVAL } from "./constants";
+import { RESUME_TOKEN_PATH, BATCH_LENGTH, TIMEOUT_INTERVAL } from "./constants";
 
 export async function realTimeSync(
   customerService: CustomerService,
@@ -41,7 +41,7 @@ export async function realTimeSync(
         batch = [];
         await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
       } else if (!batchTimer) {
-        await setTimeout(BATCH_INTERVAL);
+        await setTimeout(TIMEOUT_INTERVAL);
         await anonymisedCustomerService.upsertBatch(batch);
         batch = [];
         await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
