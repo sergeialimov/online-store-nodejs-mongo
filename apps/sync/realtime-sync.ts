@@ -29,10 +29,9 @@ export async function realTimeSync(
     }
   };
 
-  const startTimeout = () => {
-    setTimeout(TIMEOUT_INTERVAL).then(() => {
-      timeoutReached = true;
-    });
+  const startTimeout = async () => {
+    await setTimeout(TIMEOUT_INTERVAL);
+    timeoutReached = true;
   };
 
   try {
