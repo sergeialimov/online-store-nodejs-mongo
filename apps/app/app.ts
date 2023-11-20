@@ -2,6 +2,7 @@ import { MongoClient } from "mongodb";
 import { setTimeout } from "timers/promises";
 import "dotenv/config";
 import { createRandomCustomers } from "../../shared/utils";
+import { CUSTOMERS_AMOUNT, TIMEOUT_INTERVAL } from './constants';
 import {
   CustomerService,
   connectToDatabase,
@@ -13,19 +14,18 @@ import {
   try {
     client = await connectToDatabase();
     const customerService = new CustomerService(client);
-    const interval = 200;
 
     for (;;) {
       try {
-        const amount = Math.floor(Math.random() * 10) + 1;
+        const amount = Math.floor(Math.random() * CUSTOMERS_AMOUNT) + 1;
         const customers = createRandomCustomers(amount);
 
         await customerService.createCustomers(customers);
 
-        await setTimeout(interval);
+        await setTimeout(TIMEOUT_INTERVAL);
       } catch (error) {
         console.error("Error inserting customers:", error);
-        await setTimeout(interval);
+        await setTimeout(TIMEOUT_INTERVAL);
       }
     }
   } catch (err) {

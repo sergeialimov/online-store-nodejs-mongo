@@ -1,4 +1,4 @@
-import { setTimeout } from "timers/promises";
+import { setTimeout } from 'timers/promises';
 import {
   AnonymisedCustomer,
   CustomerService,
@@ -11,40 +11,53 @@ import {
   anonymiseCustomer,
 } from "../../shared/utils";
 
-import { RESUME_TOKEN_PATH, BATCH_LENGTH, TIMEOUT_INTERVAL } from "./constants";
+import { RESUME_TOKEN_PATH, BATCH_SIZE, TIMEOUT_INTERVAL } from "./constants";
 
 export async function realTimeSync(
   customerService: CustomerService,
   anonymisedCustomerService: AnonymisedCustomerService,
 ) {
   let changeStream;
+  let batch: AnonymisedCustomer[] = [];
+  let timeoutReached = false;
+
+  const processBatch = async (resumeToken: string) => {
+    if (batch.length > 0) {
+      await anonymisedCustomerService.upsertBatch(batch);
+      batch = [];
+      await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
+    }
+  };
+
+  const startTimeout = () => {
+    setTimeout(TIMEOUT_INTERVAL).then(() => {
+      timeoutReached = true;
+    });
+  };
+
   try {
     const lastToken = await getResumeToken(RESUME_TOKEN_PATH);
     changeStream = customerService.getChangeStream(lastToken);
+    startTimeout();
+
     for await (const change of changeStream) {
-      if (!customerService.isInsertReplaceOrUpdate(change)) {
-        continue;
-      }
-
-      if (!change.fullDocument) {
-        continue;
-      }
-
-      let batch: AnonymisedCustomer[] = [];
-      let batchTimer: NodeJS.Timeout | null = null;
       const resumeToken = JSON.stringify(change._id);
-      const anonymisedData = anonymiseCustomer(change.fullDocument);
-      batch.push(anonymisedData);
+      if (timeoutReached) {
+        await processBatch(resumeToken);
+        timeoutReached = false;
+        startTimeout();
+      }
 
-      if (batch.length === BATCH_LENGTH) {
-        await anonymisedCustomerService.upsertBatch(batch);
-        batch = [];
-        await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
-      } else if (!batchTimer) {
-        await setTimeout(TIMEOUT_INTERVAL);
-        await anonymisedCustomerService.upsertBatch(batch);
-        batch = [];
-        await saveResumeToken(RESUME_TOKEN_PATH, resumeToken);
+      if (!customerService.isInsertReplaceOrUpdate(change) || !change.fullDocument) {
+        continue;
+      }
+
+      batch.push(anonymiseCustomer(change.fullDocument));
+
+      if (batch.length >= BATCH_SIZE) {
+        await processBatch(resumeToken);
+        timeoutReached = false;
+        startTimeout();
       }
     }
   } catch (error) {
