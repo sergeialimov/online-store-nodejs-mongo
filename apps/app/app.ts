@@ -2,7 +2,7 @@ import { MongoClient } from "mongodb";
 import { setTimeout } from "timers/promises";
 import "dotenv/config";
 import { createRandomCustomers } from "../../shared/utils";
-import { CUSTOMERS_AMOUNT, TIMEOUT_INTERVAL } from './constants';
+import { CUSTOMERS_AMOUNT, TIMEOUT_INTERVAL } from "./constants";
 import {
   CustomerService,
   connectToDatabase,

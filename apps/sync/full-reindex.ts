@@ -10,7 +10,7 @@ import {
   anonymiseCustomer,
 } from "../../shared/utils";
 
-const batchLength = 10000;
+import { SYNC_BATCH_SIZE } from "./constants";
 
 export async function fullReindex(
   customerService: CustomerService,
@@ -18,7 +18,7 @@ export async function fullReindex(
 ) {
   try {
     console.log("Full reindexing started");
-    const cursor = customerService.getCustomersCursor(batchLength);
+    const cursor = customerService.getCustomersCursor(SYNC_BATCH_SIZE);
 
     let batch: AnonymisedCustomer[] = [];
 
@@ -27,7 +27,7 @@ export async function fullReindex(
       if (customer) {
         batch.push(anonymiseCustomer(customer));
 
-        if (batch.length === batchLength) {
+        if (batch.length === SYNC_BATCH_SIZE) {
           await anonymisedCustomerService.upsertBatch(batch);
           batch = [];
         }

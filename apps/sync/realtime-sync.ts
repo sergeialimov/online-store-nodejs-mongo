@@ -1,4 +1,4 @@
-import { setTimeout } from 'timers/promises';
+import { setTimeout } from "timers/promises";
 import {
   AnonymisedCustomer,
   CustomerService,
@@ -47,7 +47,10 @@ export async function realTimeSync(
         startTimeout();
       }
 
-      if (!customerService.isInsertReplaceOrUpdate(change) || !change.fullDocument) {
+      if (
+        !customerService.isInsertReplaceOrUpdate(change) ||
+        !change.fullDocument
+      ) {
         continue;
       }
 
