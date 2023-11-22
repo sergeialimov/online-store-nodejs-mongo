@@ -4,6 +4,7 @@ import {
   ResumeToken,
   ChangeStream,
   ChangeStreamDocument,
+  ChangeStreamOptions,
 } from "mongodb";
 import { Customer } from "../models";
 
@@ -32,11 +33,13 @@ export class CustomerService {
       ordered: false,
     });
 
-    logInsertedCustomers(result.modifiedCount + result.upsertedCount);
+    this.logInsertedCustomers(result.modifiedCount, result.upsertedCount);
   }
 
   public getChangeStream(resumeToken: ResumeToken): ChangeStream<Customer> {
-    const options = resumeToken ? { resumeAfter: resumeToken } : {};
+    const options: ChangeStreamOptions = { fullDocument: "updateLookup" };
+    options.resumeAfter = resumeToken ? resumeToken : undefined;
+
     return this.collection.watch([], options);
   }
 
@@ -54,7 +57,7 @@ export class CustomerService {
     return this.collection.find().sort({ _id: 1 }).batchSize(batchSize);
   }
 
-  logInsertedCustomers(modifiedCount, upsertedCount) {
+  logInsertedCustomers(modifiedCount: number, upsertedCount: number) {
     console.log(
       `Processed ${
         modifiedCount + upsertedCount
