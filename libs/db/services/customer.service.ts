@@ -58,7 +58,7 @@ export class CustomerService {
   }
 
   public getCustomersCursor(batchSize: number) {
-    return this.collection.find().batchSize(batchSize);
+    return this.collection.find().sort({ _id: 1 }).batchSize(batchSize);
   }
 }
 
