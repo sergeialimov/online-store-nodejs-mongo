@@ -11,15 +11,20 @@ import { fullReindex } from "./full-reindex";
 const fullReindexOption = "--full-reindex";
 
 (async () => {
-  const args = process.argv.slice(2);
+  try {
+    const args = process.argv.slice(2);
 
-  const client = await connectToDatabase();
-  const customerService = new CustomerService(client);
-  const anonymisedCustomerService = new AnonymisedCustomerService(client);
+    const client = await connectToDatabase();
+    const customerService = new CustomerService(client);
+    const anonymisedCustomerService = new AnonymisedCustomerService(client);
 
-  if (args.includes(fullReindexOption)) {
-    await fullReindex(customerService, anonymisedCustomerService);
-  } else {
-    await realTimeSync(customerService, anonymisedCustomerService);
+    if (args.includes(fullReindexOption)) {
+      await fullReindex(customerService, anonymisedCustomerService);
+    } else {
+      await realTimeSync(customerService, anonymisedCustomerService);
+    }
+  } catch (error) {
+    console.error('Error occurred:', error);
+    process.exit(1);
   }
 })();
