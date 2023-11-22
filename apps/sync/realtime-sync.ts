@@ -1,8 +1,11 @@
 import { setTimeout } from "timers/promises";
 import {
+  connectToDatabase,
+  disconnectFromDatabase,
   AnonymisedCustomer,
   CustomerService,
   AnonymisedCustomerService,
+  DbClient,
 } from "../../libs/db";
 
 import {
@@ -13,15 +16,16 @@ import {
 
 import { RESUME_TOKEN_PATH, BATCH_SIZE, TIMEOUT_INTERVAL } from "./constants";
 
-export async function realTimeSync(
-  customerService: CustomerService,
-  anonymisedCustomerService: AnonymisedCustomerService,
-) {
+export async function realTimeSync() {
+  let client: DbClient | null = null;
   let changeStream;
   let batch: AnonymisedCustomer[] = [];
   let timeoutReached = false;
 
-  const processBatch = async (resumeToken: string) => {
+  const processBatch = async (
+    anonymisedCustomerService: AnonymisedCustomerService,
+    resumeToken: string,
+  ) => {
     if (batch.length > 0) {
       await anonymisedCustomerService.upsertBatch(batch);
       batch = [];
@@ -35,6 +39,9 @@ export async function realTimeSync(
   };
 
   try {
+    client = await connectToDatabase();
+    const customerService = new CustomerService(client);
+    const anonymisedCustomerService = new AnonymisedCustomerService(client);
     const lastToken = await getResumeToken(RESUME_TOKEN_PATH);
     changeStream = customerService.getChangeStream(lastToken);
     startTimeout();
@@ -42,7 +49,7 @@ export async function realTimeSync(
     for await (const change of changeStream) {
       const resumeToken = JSON.stringify(change._id);
       if (timeoutReached) {
-        await processBatch(resumeToken);
+        await processBatch(anonymisedCustomerService, resumeToken);
         timeoutReached = false;
         startTimeout();
       }
@@ -57,7 +64,7 @@ export async function realTimeSync(
       batch.push(anonymiseCustomer(change.fullDocument));
 
       if (batch.length >= BATCH_SIZE) {
-        await processBatch(resumeToken);
+        await processBatch(anonymisedCustomerService, resumeToken);
         timeoutReached = false;
         startTimeout();
       }
@@ -67,6 +74,9 @@ export async function realTimeSync(
   } finally {
     if (changeStream) {
       await changeStream.close();
+    }
+    if (client) {
+      await disconnectFromDatabase(client);
     }
   }
 }

@@ -26,3 +26,5 @@ export const disconnectFromDatabase = async (client: MongoClient | null) => {
     }
   }
 };
+
+export { MongoClient as DbClient };

@@ -1,4 +1,3 @@
-import { MongoClient } from "mongodb";
 import { setTimeout } from "timers/promises";
 import "dotenv/config";
 import { createRandomCustomers } from "../../shared/utils";
@@ -7,10 +6,11 @@ import {
   CustomerService,
   connectToDatabase,
   disconnectFromDatabase,
+  DbClient,
 } from "../../libs/db/";
 
 (async () => {
-  let client: MongoClient | null = null;
+  let client: DbClient | null = null;
   try {
     client = await connectToDatabase();
     const customerService = new CustomerService(client);

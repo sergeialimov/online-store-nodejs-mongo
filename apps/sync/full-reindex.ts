@@ -2,6 +2,9 @@ import {
   AnonymisedCustomerService,
   CustomerService,
   AnonymisedCustomer,
+  connectToDatabase,
+  disconnectFromDatabase,
+  DbClient,
 } from "../../libs/db";
 
 import {
@@ -12,11 +15,13 @@ import {
 
 import { SYNC_BATCH_SIZE } from "./constants";
 
-export async function fullReindex(
-  customerService: CustomerService,
-  anonymisedCustomerService: AnonymisedCustomerService,
-) {
+export async function fullReindex() {
+  let client: DbClient | null = null;
   try {
+    client = await connectToDatabase();
+    const customerService = new CustomerService(client);
+    const anonymisedCustomerService = new AnonymisedCustomerService(client);
+
     console.log("Full reindexing started");
     const cursor = customerService.getCustomersCursor(SYNC_BATCH_SIZE);
 
@@ -43,6 +48,8 @@ export async function fullReindex(
   } catch (error) {
     console.error("Error occurred during full reindexing:", error);
   } finally {
-    console.log("Exiting the full reindexing process");
+    if (client) {
+      await disconnectFromDatabase(client);
+    }
   }
 }
