@@ -7,8 +7,7 @@ import {
 
 import { realTimeSync } from "./realtime-sync";
 import { fullReindex } from "./full-reindex";
-
-const fullReindexOption = "--full-reindex";
+import { FULL_REINDEX_OPTION } from './constants';
 
 (async () => {
   try {
@@ -18,7 +17,7 @@ const fullReindexOption = "--full-reindex";
     const customerService = new CustomerService(client);
     const anonymisedCustomerService = new AnonymisedCustomerService(client);
 
-    if (args.includes(fullReindexOption)) {
+    if (args.includes(FULL_REINDEX_OPTION)) {
       await fullReindex(customerService, anonymisedCustomerService);
     } else {
       await realTimeSync(customerService, anonymisedCustomerService);
