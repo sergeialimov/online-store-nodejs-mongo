@@ -31,11 +31,8 @@ export class CustomerService {
     const result = await this.collection.bulkWrite(bulkOps, {
       ordered: false,
     });
-    console.log(
-      `Processed ${
-        result.modifiedCount + result.upsertedCount
-      } customers (updated + upserted) into the collection`,
-    );
+
+    logInsertedCustomers(result.modifiedCount + result.upsertedCount);
   }
 
   public getChangeStream(resumeToken: ResumeToken): ChangeStream<Customer> {
@@ -55,6 +52,14 @@ export class CustomerService {
 
   public getCustomersCursor(batchSize: number) {
     return this.collection.find().sort({ _id: 1 }).batchSize(batchSize);
+  }
+
+  logInsertedCustomers(modifiedCount, upsertedCount) {
+    console.log(
+      `Processed ${
+        modifiedCount + upsertedCount
+      } customers (updated + upserted) into the collection`,
+    );
   }
 }
 

@@ -7,7 +7,7 @@ import {
 
 import { realTimeSync } from "./realtime-sync";
 import { fullReindex } from "./full-reindex";
-import { FULL_REINDEX_OPTION } from './constants';
+import { FULL_REINDEX_OPTION } from "./constants";
 
 (async () => {
   try {
@@ -23,7 +23,7 @@ import { FULL_REINDEX_OPTION } from './constants';
       await realTimeSync(customerService, anonymisedCustomerService);
     }
   } catch (error) {
-    console.error('Error occurred:', error);
+    console.error("Error occurred:", error);
     process.exit(1);
   }
 })();
