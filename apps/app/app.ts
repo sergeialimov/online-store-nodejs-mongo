@@ -9,10 +9,15 @@ import {
   DbClient,
 } from "../../libs/db/";
 
+
+
 (async () => {
   let client: DbClient | null = null;
   try {
     client = await connectToDatabase();
+    if (!client) {
+      throw new Error("Failed to connect to database");
+    }
     const customerService = new CustomerService(client);
 
     for (;;) {
