@@ -17,7 +17,7 @@ export const connectToDatabase = async () => {
 };
 
 export const disconnectFromDatabase = async (
-  client: MongoClient | undefined,
+  client: MongoClient | null,
 ) => {
   if (client) {
     try {

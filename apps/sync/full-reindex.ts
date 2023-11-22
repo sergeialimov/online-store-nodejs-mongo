@@ -44,6 +44,5 @@ export async function fullReindex(
     console.error("Error occurred during full reindexing:", error);
   } finally {
     console.log("Exiting the full reindexing process");
-    process.exit(0);
   }
 }

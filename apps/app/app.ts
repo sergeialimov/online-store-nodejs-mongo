@@ -16,22 +16,18 @@ import {
     const customerService = new CustomerService(client);
 
     for (;;) {
-      try {
-        const amount = Math.floor(Math.random() * CUSTOMERS_AMOUNT) + 1;
-        const customers = createRandomCustomers(amount);
+      const amount = Math.floor(Math.random() * CUSTOMERS_AMOUNT) + 1;
+      const customers = createRandomCustomers(amount);
 
-        await customerService.createCustomers(customers);
-
-        await setTimeout(TIMEOUT_INTERVAL);
-      } catch (error) {
-        console.error("Error inserting customers:", error);
-        await setTimeout(TIMEOUT_INTERVAL);
-      }
+      await customerService.createCustomers(customers);
     }
   } catch (err) {
-    console.error("Startup error:", err);
+    console.error("Application error:", err);
     if (client) {
       await disconnectFromDatabase(client);
     }
+    process.exit(1);
   }
+
+  await setTimeout(TIMEOUT_INTERVAL);
 })();
