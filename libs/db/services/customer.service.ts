@@ -20,26 +20,22 @@ export class CustomerService {
   }
 
   public async createCustomers(customers: Customer[]): Promise<void> {
-    try {
-      const bulkOps = customers.map((customer) => ({
-        updateOne: {
-          filter: { email: customer.email },
-          update: { $set: customer },
-          upsert: true,
-        },
-      }));
+    const bulkOps = customers.map((customer) => ({
+      updateOne: {
+        filter: { email: customer.email },
+        update: { $set: customer },
+        upsert: true,
+      },
+    }));
 
-      const result = await this.collection.bulkWrite(bulkOps, {
-        ordered: false,
-      });
-      console.log(
-        `Processed ${
-          result.modifiedCount + result.upsertedCount
-        } customers (updated + upserted) into the collection`,
-      );
-    } catch (err) {
-      console.error("An error occurred:", err);
-    }
+    const result = await this.collection.bulkWrite(bulkOps, {
+      ordered: false,
+    });
+    console.log(
+      `Processed ${
+        result.modifiedCount + result.upsertedCount
+      } customers (updated + upserted) into the collection`,
+    );
   }
 
   public getChangeStream(resumeToken: ResumeToken): ChangeStream<Customer> {
