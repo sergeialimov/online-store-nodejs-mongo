@@ -20,6 +20,7 @@ export async function realTimeSync() {
   let client: DbClient | null = null;
   let changeStream;
   let batch: AnonymisedCustomer[] = [];
+  let currentTimeoutId = 0;
   let timeoutReached = false;
 
   const processBatch = async (
@@ -34,8 +35,14 @@ export async function realTimeSync() {
   };
 
   const startTimeout = async () => {
+    const thisTimeoutId = ++currentTimeoutId;
+    timeoutReached = false;
+
     await setTimeout(TIMEOUT_INTERVAL);
-    timeoutReached = true;
+
+    if (thisTimeoutId === currentTimeoutId) {
+      timeoutReached = true;
+    }
   };
 
   try {
@@ -47,13 +54,6 @@ export async function realTimeSync() {
     startTimeout();
 
     for await (const change of changeStream) {
-      const resumeToken = JSON.stringify(change._id);
-      if (timeoutReached) {
-        await processBatch(anonymisedCustomerService, resumeToken);
-        timeoutReached = false;
-        startTimeout();
-      }
-
       if (
         !customerService.isInsertReplaceOrUpdate(change) ||
         !change.fullDocument
@@ -61,13 +61,14 @@ export async function realTimeSync() {
         continue;
       }
 
-      batch.push(anonymiseCustomer(change.fullDocument));
-
-      if (batch.length >= BATCH_SIZE) {
+      if (timeoutReached || batch.length >= BATCH_SIZE) {
+        const resumeToken = JSON.stringify(change._id);
         await processBatch(anonymisedCustomerService, resumeToken);
         timeoutReached = false;
         startTimeout();
       }
+
+      batch.push(anonymiseCustomer(change.fullDocument));
     }
   } catch (error) {
     console.error("Error processing change stream:", error);
